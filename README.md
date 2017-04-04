@@ -11,6 +11,3 @@ Keep in mind that LuaCoin is still in **ALPHA**. So there are many features that
 
 ## "Where do I get this?"
 It's simple! All you have to do is [click here](https://www.roblox.com/library/723367380/LuaCoin-v0-1a) to get it for free or download the [source code](https://github.com/shloid/lua_coin_manager/blob/master/LuaCoinManager.lua) from this repository. 
-
-Alt-H2
-------
