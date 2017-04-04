@@ -11,15 +11,22 @@ local Playerbase  = DataStore:GetDataStore("LuaCoin_Playerbase")
 -- Settings & Module's Return Value
 local lcm = {}
 local settings = {
+	debug = true;
 	version = "1.0a",
 	encrypted = true, -- it does nothing yet. so coming soon
 	encrypt_length = 16,
-	github_repository = "",
+	github_repository = "https://github.com/shloid/lua_coin_manager",
 }
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------
 -- Local Functions / Methods
 ------------------------------------------------------------------------------------------------------------------------------------------------------
+
+local function Print(str)
+	if settings.debug == true then 
+		return print(str) 
+	end
+end
 
 local function encrypt()
 	local var, letterTable, numberTable = "",{"a","B","c","D","e","F","g","H","i","J","k","L","m","N","o","P","q","R","s","T","u","V","w","X","y","Z","#","$","%","@"},{"0","1","2","3","4","5","6","7","8","9"}
@@ -34,7 +41,7 @@ local function encrypt()
 			var = var..letter	
 		end
 	end
-	print("[LuaCoin] New encrypted code: "..var)
+	Print("[LuaCoin] New encrypted code: "..var)
 	return var
 end
 
@@ -46,9 +53,9 @@ local function checkForKey(key)
 		end)
 	end)
 	if succ then
-		print("[LuaCoin] There is a key within the Playerbase!")
+		Print("[LuaCoin] There is a key within the Playerbase!")
 	else
-		print("[LuaCoin] The player may not have a key OR you're in offline mode.")
+		Print("[LuaCoin] The player may not have a key OR you're in offline mode.")
 	end
 	return returnValue
 end
@@ -60,7 +67,7 @@ end
 function lcm:LuaCoinManager(amount,key)
 	if amount == nil or key == nil then return end
 	local encryptedKey = checkForKey(key)
-	if encryptedKey == nil then print("[LuaCoin] It seems that the encryptedKey is nil.") return end
+	if encryptedKey == nil then Print("[LuaCoin] It seems that the encryptedKey is nil.") return end
 	
 	local succ = pcall(function()
 		MasterBank:GetAsync(encryptedKey)
@@ -69,11 +76,11 @@ function lcm:LuaCoinManager(amount,key)
 	if succ then
 		MasterBank:UpdateAsync(encryptedKey,function(oldValue)
 			if oldValue == nil then return amount end
-			print(oldValue + amount)
+			Print(oldValue + amount)
 			return oldValue + amount
 		end)
 	else
-		print("[LuaCoin] error: MasterBank cannot find the correct key.")
+		Print("[LuaCoin] error: MasterBank cannot find the correct key.")
 		return
 	end	
 end
@@ -81,7 +88,7 @@ end
 function lcm:GetCoins(key)
 	if key == nil then return end
 	local encryptedKey = checkForKey(key)
-	if encryptedKey == nil then print("[LuaCoin] It seems that the encryptedKey is nil.") return end
+	if encryptedKey == nil then Print("[LuaCoin] It seems that the encryptedKey is nil.") return end
 	
 	Playerbase:UpdateAsync(key, function(oldValue)
 		if oldValue == nil then
@@ -99,7 +106,7 @@ function lcm:GetCoins(key)
 	if succ then
 		return MasterBank:GetAsync(encryptedKey)
 	else
-		print("[LuaCoin] error: MasterBank cannot find the correct key.")
+		Print("[LuaCoin] error: MasterBank cannot find the correct key.")
 		return 0
 	end	
 end
@@ -127,11 +134,11 @@ function lcm:SetupBank(key)
 
 	if succ then
 		MasterBank:UpdateAsync(key, function(oldValue)
-			print("[LuaCoin]",encryptedKey,"has been added to the MasterBank and Playerbase.")
+			Print("[LuaCoin]",encryptedKey,"has been added to the MasterBank and Playerbase.")
 			return 0
 		end)
 	else
-		print("[LuaCoin] error: MasterBank cannot find the correct key.")
+		Print("[LuaCoin] error: MasterBank cannot find the correct key.")
 		return
 	end	
 end
@@ -139,7 +146,7 @@ end
 function lcm:GetInformation(key)
 	if key == nil then return end
 	local encryptedKey = checkForKey(key)
-	if encryptedKey == nil then print("[LuaCoin] It seems that the encryptedKey is nil.") return end
+	if encryptedKey == nil then Print("[LuaCoin] It seems that the encryptedKey is nil.") return end
 	
 	local succ = pcall(function()
 		MasterBank:GetAsync(encryptedKey)
@@ -152,7 +159,7 @@ function lcm:GetInformation(key)
 			print("[LuaCoin] Bank Amount:",value)
 		end)
 	else
-		print("[LuaCoin] error: MasterBank cannot find the correct key.")
+		Print("[LuaCoin] error: MasterBank cannot find the correct key.")
 		return
 	end	
 end
