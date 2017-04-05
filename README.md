@@ -1,4 +1,11 @@
-# LuaCoin: An encrypted database system for ROBLOX. 
+<div align="center">
+  <br/>
+  <p>
+    <a href="#!"><img src="http://i.imgur.com/n3uclbe.png" /></a>
+  </p>
+  <br/>
+</div>
+
 ## About
 LuaCoin is a ROBLOX encryption database system that allows creators to effectively keep certain data (such as currency) safe without the worries of some exploiter finding a way to manipulate with their scores.
 
